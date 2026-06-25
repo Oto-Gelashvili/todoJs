@@ -1,0 +1,312 @@
+/* 1. Use a more-intuitive box-sizing model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+*:not(dialog) {
+  margin: 0;
+}
+
+/* 3. Enable keyword animations */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
+body {
+  /* 4. Increase line-height */
+  line-height: 1.5;
+  /* 5. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 6. Improve media defaults */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 7. Inherit fonts for form controls */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* 8. Avoid text overflows */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/* 9. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+/*
+  10. Create a root stacking context
+*/
+#root,
+#__next {
+  isolation: isolate;
+}
+
+:root {
+  --primary: #ec6530;
+  --hover: #ffae6e;
+  --bg: #ffe3e3;
+  --active: #8fdddf;
+  --text: #565656;
+}
+html {
+  font-size: 62.5%;
+}
+body {
+  font-family: "Inter", sans-serif;
+  padding: 4.8rem;
+  background-color: var(--bg);
+  color: var(--primary);
+  max-width: 1080px;
+  margin: 0 auto;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.4rem;
+  padding-bottom: 2.4rem;
+  border-bottom: 1px solid var(--hover);
+}
+header h1,
+header h2 {
+  font-weight: bold;
+  font-size: 2.4rem;
+}
+.addCont {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+.addBtn {
+  transition: 0.4s;
+  cursor: pointer;
+  outline: none;
+}
+.addBtn:hover {
+  color: var(--hover);
+}
+.addBtn:active {
+  color: var(--active);
+}
+.addBtn:focus-visible {
+  color: var(--hover);
+}
+
+#overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 2.4rem;
+  border-radius: 8px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  min-width: 320px;
+}
+.modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  font-size: 1.6rem;
+  color: var(--text);
+}
+.modal form h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+.modal form input,
+.modal select {
+  border: 1px solid var(--primary);
+  background-color: var(--bg);
+  border-radius: 4px;
+  padding: 0.4rem;
+  color: var(--text);
+  transition: 0.4s;
+  outline: none;
+}
+
+.modal form input:hover,
+.modal select:hover {
+  border-color: var(--hover);
+}
+.modal form input:active,
+.modal select:active {
+  border-color: var(--active);
+}
+.modal form input:focus-visible,
+.modal select:focus-visible {
+  border-color: var(--hover);
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.2rem;
+}
+.hidden {
+  display: none !important;
+}
+.todo-card {
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  padding: 1.2rem;
+  display: flex;
+  gap: 0.8rem;
+  font-size: 1.6rem;
+  color: var(--text);
+  justify-content: space-between;
+}
+
+.todo-header {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+.todo-header h3 {
+  color: var(--primary);
+  font-weight: bold;
+  width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.prio-cont {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.todo-card .desc {
+  font-size: 1.4rem;
+  flex: 1;
+  align-self: center;
+}
+.todo-footer {
+  display: flex;
+  font-size: 1.4rem;
+  align-items: center;
+  gap: 0.8rem;
+  color: #888;
+}
+
+.priority.low {
+  color: green;
+}
+.priority.medium {
+  color: orange;
+}
+.priority.high {
+  color: red;
+}
+
+.due.overdue {
+  color: red;
+  font-weight: bold;
+}
+
+.todo-card.completed {
+  opacity: 0.5;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding-top: 2.4rem;
+}
+.todo-expanded {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid #eee;
+  margin-top: 0.8rem;
+}
+
+.todo-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+
+.todo-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.todo-fields input,
+.todo-fields select {
+  padding: 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.todo-fields input:disabled,
+.todo-fields select:disabled {
+  background: transparent;
+  border-color: transparent;
+  color: inherit;
+  cursor: default;
+}
+
+.todo-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.todo-header {
+  cursor: pointer;
+}
