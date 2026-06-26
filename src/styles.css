@@ -196,10 +196,17 @@ header h2 {
   border: 1px solid var(--primary);
   border-radius: 8px;
   padding: 1.2rem;
-  display: flex;
-  gap: 0.8rem;
   font-size: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
   color: var(--text);
+  cursor: pointer;
+  transition: 0.4s;
+}
+.base-card {
+  display: flex;
+  gap: 2.4rem;
   justify-content: space-between;
 }
 
@@ -225,10 +232,26 @@ header h2 {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.todo-card .desc {
+.todo-card .base-card .desc {
   font-size: 1.4rem;
   flex: 1;
   align-self: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.todo-card form .desc-cont {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  grid-area: 1/1/2/3;
+}
+.todo-card form .desc-cont h3 {
+  font-size: 1.8rem;
+  color: var(--primary);
+}
+.todo-card form .desc-cont .desc {
+  font-size: 1.4rem;
 }
 .todo-footer {
   display: flex;
@@ -267,9 +290,8 @@ header h2 {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+  border-top: 1px solid var(--primary);
   padding-top: 1.2rem;
-  border-top: 1px solid #eee;
-  margin-top: 0.8rem;
 }
 
 .todo-fields {
@@ -302,11 +324,108 @@ header h2 {
   cursor: default;
 }
 
-.todo-actions {
+.todo-card form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.6rem;
+}
+.todo-card form label {
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.4rem;
+  color: var(--hover);
+}
+.todo-card form label input,
+.todo-card form label select {
+  color: var(--text);
+  outline: none;
+  border: 1px solid var(--primary);
+  padding: 0.4rem;
+  border-radius: 4px;
+  transition: 0.4s;
+  height: 100%;
+  width: 100%;
+}
+.todo-card form label input:hover,
+.todo-card form label input:focus-visible,
+.todo-card form label select:hover,
+.todo-card form label select:focus-visible {
+  border-color: var(--hover);
+}
+.todo-card form label input:focus,
+.todo-card form label select:focus {
+  border-color: var(--active);
+}
+.todo-card form .todo-actions {
+  display: flex;
+  gap: 1.2rem;
+  align-items: end;
+  justify-content: space-between;
+  grid-area: 4/1/4/3;
+}
+.todo-card form .todo-actions .actionBtnCont {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+.todo-card form .todo-actions button {
+  padding: 0.4rem 0.8rem;
+  font-size: 1.6rem;
+  color: #fff;
+  height: fit-content;
+  border: 1px solid transparent;
+  outline: none;
+  cursor: pointer;
+  transition: 0.4s;
+  background-color: green;
+  border-radius: 4px;
 }
 
-.todo-header {
+.todo-card form .todo-actions button.cancelBtn {
+  background-color: red;
+}
+.todo-card form .todo-actions .deleteBtn {
+  font-size: 3.2rem;
+  color: red;
   cursor: pointer;
+  transition: 0.4s;
+}
+.todo-card form .todo-actions button:hover,
+.todo-card form .todo-actions button:focus-visible {
+  background-color: var(--hover);
+}
+.todo-card form .todo-actions button:active {
+  background-color: var(--active);
+}
+.todo-card form .todo-actions .deleteBtn:hover,
+.todo-card form .todo-actions .deleteBtn:focus-visible {
+  color: var(--hover);
+}
+.todo-card form .todo-actions .deleteBtn:active {
+  color: var(--active);
+}
+@media screen and (max-width: 768px) {
+  .todo-card .base-card .desc {
+    display: none;
+  }
+  .todo-card .base-card {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .todo-card .base-card .todo-header {
+    justify-content: space-between;
+  }
+  .prio-cont {
+    width: unset;
+  }
+  .todo-footer {
+    align-self: end;
+  }
+}
+
+@media screen and (max-width: 475px) {
+  .todo-card form {
+    flex-direction: column;
+    display: flex;
+  }
 }

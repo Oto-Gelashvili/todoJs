@@ -1,5 +1,5 @@
 import { format, isPast } from "date-fns";
-import { toggleTodo } from "../app.js";
+import { toggleTodo, editTodo, deleteTodo } from "../app.js";
 
 export function render(todos, projects) {
   const container = document.querySelector("#app");
@@ -13,24 +13,61 @@ export function render(todos, projects) {
     const overdue = isPast(new Date(todo.dueDate)) && !todo.completed;
 
     div.innerHTML = `
-      <div class="todo-header">
-        <h3>${todo.title}</h3>
-        <div class="prio-cont"><p>Priority:</p><span class="priority ${todo.priority}">${todo.priority} </span></div>
+      <div class="base-card">
+        <div class="todo-header">
+          <h3>${todo.title}</h3>
+          <div class="prio-cont"><p>Priority:</p><span class="priority ${todo.priority}">${todo.priority} </span></div>
+        </div>
+        <p class="desc">${todo.desc}</p>
+        <div class="todo-footer">
+                <span class="project">${todo.project}</span>
+          <span class="due ${overdue ? "overdue" : ""}">
+            ${format(new Date(todo.dueDate), "MMM d, yyyy")}
+          </span>
+          <input type="checkbox" data-id="${todo.id}" ${todo.completed ? "checked" : ""} />
+        </div>
       </div>
-      <p class="desc">${todo.desc}</p>
-      <div class="todo-footer">
-              <span class="project">${todo.project}</span>
-        <span class="due ${overdue ? "overdue" : ""}">
-          ${format(new Date(todo.dueDate), "MMM d, yyyy")}
-        </span>
-        <input type="checkbox" data-id="${todo.id}" ${todo.completed ? "checked" : ""} />
+<form class="todo-expanded hidden">
+        <div class="desc-cont">
+          <h3>Description</h3>
+          <p class="desc">${todo.desc}</p>
+        </div>
+    <label>
+      Title
+      <input type="text" name="title" value="${todo.title}" required />
+    </label>
+    <label>
+      Description
+      <input type="text" name="desc" value="${todo.desc}" />
+    </label>
+    <label>
+      Due Date
+      <input type="date" name="dueDate" value="${todo.dueDate}" required />
+    </label>
+    <label>
+      Priority
+      <select name="priority">
+        <option value="low" ${todo.priority === "low" ? "selected" : ""}>Low</option>
+        <option value="medium" ${todo.priority === "medium" ? "selected" : ""}>Medium</option>
+        <option value="high" ${todo.priority === "high" ? "selected" : ""}>High</option>
+      </select>
+    </label>
+    
+    <div class="todo-actions">
+<span class="material-symbols-outlined deleteBtn">delete</span>
+
+      <div class="actionBtnCont">
+        <button type="button" class="cancelBtn">Cancel</button>
+        <button type="submit">Save</button>
       </div>
+    </div>
+  </form>
     `;
-    // toggle expand on header click
-    const header = div.querySelector(".todo-header");
+    //open
     const expanded = div.querySelector(".todo-expanded");
-    header.addEventListener("click", (e) => {
+    div.addEventListener("click", (e) => {
       if (e.target.type === "checkbox") return;
+      if (e.target.closest(".todo-expanded")) return;
       expanded.classList.toggle("hidden");
     });
 
@@ -39,33 +76,22 @@ export function render(todos, projects) {
       toggleTodo(todo.id);
     });
 
-    //del
-    // div.querySelector(".deleteBtn").addEventListener("click", () => {
-    //   deleteTodo(todo.id);
-    // });
+    // cancel
+    div.querySelector(".cancelBtn").addEventListener("click", () => {
+      expanded.classList.add("hidden");
+    });
 
-    // edit / save
-    // const editBtn = div.querySelector(".editBtn");
-    // const saveBtn = div.querySelector(".saveBtn");
-    // const fields = div.querySelectorAll(
-    //   ".edit-title, .edit-desc, .edit-dueDate, .edit-priority",
-    // );
+    // delete
+    div.querySelector(".deleteBtn").addEventListener("click", () => {
+      deleteTodo(todo.id);
+    });
 
-    // editBtn.addEventListener("click", () => {
-    //   fields.forEach((f) => f.removeAttribute("disabled"));
-    //   editBtn.classList.add("hidden");
-    //   saveBtn.classList.remove("hidden");
-    // });
-
-    // saveBtn.addEventListener("click", () => {
-    //   const updatedData = {
-    //     title: div.querySelector(".edit-title").value,
-    //     desc: div.querySelector(".edit-desc").value,
-    //     dueDate: div.querySelector(".edit-dueDate").value,
-    //     priority: div.querySelector(".edit-priority").value,
-    //   };
-    //   editTodo(todo.id, updatedData);
-    // });
+    // save
+    expanded.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(expanded));
+      editTodo(todo.id, data);
+    });
     container.appendChild(div);
   });
 }
