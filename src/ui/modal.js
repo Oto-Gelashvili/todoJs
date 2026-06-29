@@ -30,3 +30,10 @@ export function closeModal() {
   document.getElementById("modal").classList.add("hidden");
   document.getElementById("overlay").classList.add("hidden");
 }
+
+export function renderProjectOptions(projects) {
+  const select = document.getElementById("project");
+  select.innerHTML = projects
+    .map((p) => `<option value="${p.name}">${p.name}</option>`)
+    .join("");
+}

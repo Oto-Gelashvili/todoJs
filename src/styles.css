@@ -404,6 +404,93 @@ header h2 {
 .todo-card form .todo-actions .deleteBtn:active {
   color: var(--active);
 }
+
+.projectsCont {
+  position: relative;
+}
+
+.projectsBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: var(--primary);
+  outline: none;
+  transition: 0.4s;
+}
+
+.projectsBtn:hover {
+  color: var(--hover);
+}
+
+.projectsDropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.8rem);
+  background: white;
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  list-style: none;
+  padding: 0.4rem 0;
+  min-width: 160px;
+  z-index: 10;
+}
+
+.projectsDropdown li {
+  padding: 0.8rem 1.6rem;
+  cursor: pointer;
+  font-size: 1.6rem;
+  color: var(--text);
+  transition: 0.4s;
+}
+
+.projectsDropdown li:hover {
+  background-color: var(--bg);
+  color: var(--primary);
+}
+
+.projectsDropdown li.active {
+  color: var(--primary);
+  font-weight: bold;
+}
+.new-project-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1.6rem;
+  border-top: 1px solid var(--hover);
+}
+
+.newProjectInput {
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  padding: 0.2rem 0.6rem;
+  font-size: 1.4rem;
+  width: 100%;
+  outline: none;
+  color: var(--text);
+  background: var(--bg);
+}
+
+.newProjectBtn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.2rem 0.8rem;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: 0.4s;
+  white-space: nowrap;
+}
+
+.newProjectBtn:hover {
+  background: var(--hover);
+}
 @media screen and (max-width: 768px) {
   .todo-card .base-card .desc {
     display: none;

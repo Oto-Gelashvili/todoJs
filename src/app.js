@@ -1,6 +1,11 @@
 import { render } from "./ui/dom.js";
 import { Todo } from "./models/todo.js";
-import { initModal } from "./ui/modal.js";
+import { initModal, renderProjectOptions } from "./ui/modal.js";
+import { Project } from "./models/project.js";
+import { renderDropdown } from "./ui/projectsDropdown.js";
+
+import { initProjectsDropdown } from "./ui/projectsDropdown.js";
+
 import {
   saveTodos,
   loadTodos,
@@ -10,17 +15,30 @@ import {
 
 let todos = loadTodos();
 let projects = loadProjects();
+let activeProject = "Default";
 
 export function initApp() {
-  render(todos, projects);
+  initProjectsDropdown(projects, (selected) => {
+    activeProject = selected;
+    renderFiltered();
+  });
+  renderProjectOptions(projects);
+  renderFiltered();
   initModal();
 }
 
+function renderFiltered() {
+  const filtered =
+    activeProject === "Default"
+      ? todos
+      : todos.filter((t) => t.project === activeProject);
+  render(filtered, projects);
+}
 export function addTodo(data) {
   const todo = new Todo(data);
   todos.push(todo);
   saveTodos(todos);
-  render(todos, projects);
+  renderFiltered();
 }
 
 export function getTodos() {
@@ -31,13 +49,13 @@ export function toggleTodo(id) {
   if (todo) {
     todo.completed = !todo.completed;
     saveTodos(todos);
-    render(todos, projects);
+    renderFiltered();
   }
 }
 export function deleteTodo(id) {
   todos = todos.filter((t) => t.id !== id);
   saveTodos(todos);
-  render(todos, projects);
+  renderFiltered();
 }
 
 export function editTodo(id, updatedData) {
@@ -45,6 +63,21 @@ export function editTodo(id, updatedData) {
   if (todo) {
     Object.assign(todo, updatedData);
     saveTodos(todos);
-    render(todos, projects);
+    renderFiltered();
   }
+}
+export function addProject(name, onSelect) {
+  const exists = projects.find((p) => p.name === name);
+  if (exists) return;
+
+  const project = new Project(name);
+  projects.push(project);
+  saveProjects(projects);
+
+  const dropdown = document.querySelector(".projectsDropdown");
+  renderDropdown(projects, dropdown, onSelect);
+  renderProjectOptions(projects);
+
+  activeProject = name;
+  renderFiltered();
 }
